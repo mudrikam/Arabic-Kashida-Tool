@@ -4,5 +4,10 @@
     "model": "gemini-2.5-flash",
     "temperature": 0.7,
     "max_tokens": 1000
+  },
+  "appearance": {
+    "current_font": "Noto Sans Arabic",
+    "current_size": 20,
+    "current_mode": "ABC"
   }
 }

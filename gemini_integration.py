@@ -200,12 +200,10 @@ Teks input: {user_text}"""
 
         # Prompt logic: jika surah/ayat kosong, gunakan context/topik
         if (not surah and not ayat) and context:
-            prompt = f"""Carikan ayat Al-Qur'an yang relevan dengan topik/konteks berikut: "{context}".
+            prompt = f"""Carikan ayat Al-Qur'an yang relevan dengan topik atau konteks berikut: "{context}".
 Tampilkan ayat Arab lengkap dengan harakat.
-Selalu sebutkan nama surah dan nomor ayat secara jelas pada hasil, dan masukkan ke dalam field "sumber" pada JSON (misal: "Al-Baqarah: 255").
-Jika tidak tahu pasti, tuliskan sumber ayat sebisa mungkin.
-
-"""
+Pada hasil JSON, field "sumber" WAJIB diisi dengan format: Nama Surah: Nomor Ayat. Jika tidak tahu pasti, tuliskan sumber ayat sebisa mungkin.
+JANGAN menyalin atau mencontohkan format literal apapun, selalu isi field "sumber" dengan sumber ayat yang benar sesuai hasil pencarian."""
             if sertakan_arti == "Ya":
                 prompt += "\nSertakan juga artinya dalam bahasa Indonesia."
             if sertakan_cara_baca == "Ya":
@@ -220,7 +218,7 @@ Jawab HANYA dalam format JSON berikut, tanpa penjelasan tambahan:
   "arti": "arti ayat (jika diminta)",
   "cara_baca": "cara baca latin (jika diminta)",
   "asbabun_nuzul": "asbabun nuzul (jika diminta)",
-  "sumber": "nama surah dan nomor ayat"
+  "sumber": "Nama Surah: Nomor Ayat"
 }"""
             return prompt
 
@@ -231,7 +229,8 @@ Jawab HANYA dalam format JSON berikut, tanpa penjelasan tambahan:
         if ayat:
             prompt += f" ayat {ayat}"
         prompt += " dalam huruf Arab lengkap dengan harakat."
-        prompt += "\nSelalu sebutkan nama surah dan nomor ayat secara jelas pada hasil, dan masukkan ke dalam field \"sumber\" pada JSON (misal: \"Al-Baqarah: 255\")."
+        prompt += "\nPada hasil JSON, field \"sumber\" WAJIB diisi dengan format: Nama Surah: Nomor Ayat. Jika tidak tahu pasti, tuliskan sumber ayat sebisa mungkin."
+        prompt += "\nJANGAN menyalin atau mencontohkan format literal apapun, selalu isi field \"sumber\" dengan sumber ayat yang benar sesuai hasil pencarian."
         if sertakan_arti == "Ya":
             prompt += "\nSertakan juga artinya dalam bahasa Indonesia."
         if sertakan_cara_baca == "Ya":
@@ -248,7 +247,7 @@ Jawab HANYA dalam format JSON berikut, tanpa penjelasan tambahan:
   "arti": "arti ayat (jika diminta)",
   "cara_baca": "cara baca latin (jika diminta)",
   "asbabun_nuzul": "asbabun nuzul (jika diminta)",
-  "sumber": "nama surah dan nomor ayat"
+  "sumber": "Nama Surah: Nomor Ayat"
 }"""
         return prompt
 
@@ -321,4 +320,5 @@ Topik: {topik}"""
         if self.worker and self.worker.isRunning():
             self.worker.terminate()
             self.worker.wait()
+        self.worker = None
         self.worker = None

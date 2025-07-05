@@ -70,27 +70,26 @@ def format_json_fields(json_obj):
     
     lines = []
     
+    # 1. Ayat
     if "result" in json_obj and json_obj["result"]:
         lines.append(str(json_obj["result"]))
-    
-    if "arti" in json_obj and json_obj["arti"]:
-        lines.append("\n" + str(json_obj["arti"]))
-    
+    # 2. Cara baca
     if "cara_baca" in json_obj and json_obj["cara_baca"]:
         lines.append("\n" + str(json_obj["cara_baca"]))
-    
+    # 3. Arti
+    if "arti" in json_obj and json_obj["arti"]:
+        lines.append("\n" + str(json_obj["arti"]))
+    # 4. Asbabun nuzul
     if "asbabun_nuzul" in json_obj and json_obj["asbabun_nuzul"]:
         lines.append("\n" + str(json_obj["asbabun_nuzul"]))
-    
+    # 5. Sumber
     if "sumber" in json_obj and json_obj["sumber"]:
         lines.append("\n" + str(json_obj["sumber"]))
-    
+    # 6. Hadith (jika ada)
     if "hadith_text" in json_obj and json_obj["hadith_text"]:
         lines.append("\n" + str(json_obj["hadith_text"]))
-    
     if "hadith_source" in json_obj and json_obj["hadith_source"]:
         lines.append("\n" + str(json_obj["hadith_source"]))
-    
     if "hadith_warning" in json_obj and json_obj["hadith_warning"]:
         lines.append("\n⚠️ " + str(json_obj["hadith_warning"]))
     

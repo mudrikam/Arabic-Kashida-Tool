@@ -1,6 +1,4 @@
 import sys
-import subprocess
-import pkg_resources
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout,
     QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QTextEdit, QComboBox, QSpinBox, QTabWidget, QScrollArea, QInputDialog, QMessageBox, QProgressDialog)
 from PySide6.QtCore import Qt, QPoint, QEvent, QTimer, QThread, Signal
@@ -11,26 +9,6 @@ import os
 import json
 from gemini_ai_helper import request_gemini
 from gemini_response_helper import parse_gemini_response
-
-def check_and_install_requirements():
-    req_file = os.path.join(os.path.dirname(__file__), "requirements.txt")
-    if not os.path.exists(req_file):
-        return
-    with open(req_file) as f:
-        required = [line.strip() for line in f if line.strip() and not line.startswith("#")]
-    installed = {pkg.key for pkg in pkg_resources.working_set}
-    missing = []
-    for req in required:
-        pkg_name = req.split(">=")[0].split("==")[0].lower()
-        if pkg_name not in installed:
-            missing.append(req)
-    if missing:
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", *missing])
-        except Exception as e:
-            QMessageBox.critical(None, "Instalasi Paket Gagal", f"Gagal menginstal paket: {missing}\n{e}")
-
-check_and_install_requirements()
 
 class GeminiWorker(QThread):
     finished = Signal(str)

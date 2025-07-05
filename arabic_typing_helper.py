@@ -143,6 +143,16 @@ class ArabicTypingHelper(QMainWindow):
         doc.setDefaultTextOption(option)
         self.text_area.installEventFilter(self)
         main_layout.addWidget(self.text_area)
+
+        # Catatan label khusus di bawah text area
+        self.catatan_label = QLabel("")
+        catatan_font = QFont()
+        catatan_font.setPointSize(11)
+        self.catatan_label.setFont(catatan_font)
+        self.catatan_label.setStyleSheet("color: #d32f2f; margin-top: 4px;")
+        self.catatan_label.setWordWrap(True)
+        self.catatan_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        main_layout.addWidget(self.catatan_label)
         
         # Font update functions
         def update_font():
@@ -155,6 +165,7 @@ class ArabicTypingHelper(QMainWindow):
             self.font_combo.setCurrentText("Noto Sans Arabic")
             self.size_spin.setValue(20)
             self.text_area.clear()
+            self.show_catatan("")
             update_font()
         
         self.font_combo.currentTextChanged.connect(update_font)
@@ -191,6 +202,15 @@ class ArabicTypingHelper(QMainWindow):
         keyboard_main_widget = QWidget()
         keyboard_main_widget.setLayout(keyboard_layout)
         main_layout.addWidget(keyboard_main_widget)
+
+    def show_catatan(self, catatan_text):
+        """Tampilkan catatan di label khusus, selalu merah, kecil, dan ada emoji"""
+        if catatan_text and catatan_text.strip():
+            self.catatan_label.setText(f"⚠️ <b>Catatan:</b> <span>{catatan_text.strip()}</span>")
+            self.catatan_label.setVisible(True)
+        else:
+            self.catatan_label.setText("")
+            self.catatan_label.setVisible(False)
 
     def load_saved_settings(self):
         """Load saved appearance settings"""
@@ -382,6 +402,7 @@ class ArabicTypingHelper(QMainWindow):
 
     def clear_text(self):
         self.text_area.clear()
+        self.show_catatan("")
 
     def copy_text(self):
         text = self.text_area.toPlainText()

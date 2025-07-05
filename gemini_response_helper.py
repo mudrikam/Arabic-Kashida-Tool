@@ -92,6 +92,11 @@ def format_json_fields(json_obj):
         lines.append("\n" + str(json_obj["hadith_source"]))
     if "hadith_warning" in json_obj and json_obj["hadith_warning"]:
         lines.append("\n⚠️ " + str(json_obj["hadith_warning"]))
+    # 7. Catatan/crosscheck dari Gemini jika ada
+    if "catatan" in json_obj and json_obj["catatan"]:
+        lines.append("\n" + str(json_obj["catatan"]))
+    if "note" in json_obj and json_obj["note"]:
+        lines.append("\n" + str(json_obj["note"]))
     
     return '\n'.join(lines).strip()
 

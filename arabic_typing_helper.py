@@ -148,6 +148,7 @@ class ArabicTypingHelper(QMainWindow):
         def reset_font_settings():
             self.font_combo.setCurrentText("Noto Sans Arabic")
             self.size_spin.setValue(20)
+            self.text_area.clear()
             update_font()
         self.font_combo.currentTextChanged.connect(update_font)
         self.size_spin.valueChanged.connect(update_font)
@@ -593,14 +594,37 @@ class ArabicTypingHelper(QMainWindow):
                 self.copy_text()
                 self.highlight_button("copy")
                 return True
+            
+            if event.key() == Qt.Key_Backspace:
+                self.backspace()
+                return True
+            elif event.key() == Qt.Key_Delete:
+                self.clear_text()
+                return True
+            elif event.key() == Qt.Key_Space:
+                self.insert_text(" ")
+                self.highlight_button("space")
+                return True
+            elif event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+                self.insert_text("\n")
+                return True
+            elif event.key() == Qt.Key_Tab:
+                self.insert_text("\t")
+                return True
+            
             key = event.text().lower()
+            if not key:
+                return False
+            
             if self.current_mode == "Pegon":
                 char = self.get_pegon_mapping(key, shift=event.modifiers() & Qt.ShiftModifier)
                 self.insert_text(char)
                 self.highlight_button(key)
                 return True
+            
             keyboard_mapping = self.get_keyboard_mapping()
             harakat_mapping = self.get_harakat_mapping()
+            
             if key in harakat_mapping and self.current_mode != "ABC":
                 self.insert_text(harakat_mapping[key])
                 self.highlight_button(key)
@@ -609,22 +633,7 @@ class ArabicTypingHelper(QMainWindow):
                 self.insert_text(keyboard_mapping[key])
                 self.highlight_button(key)
                 return True
-            elif event.key() == Qt.Key_Space:
-                self.insert_text(" ")
-                self.highlight_button("space")
-                return True
-            elif event.key() == Qt.Key_Backspace:
-                self.backspace()
-                return True
-            elif event.key() == Qt.Key_Delete:
-                self.clear_text()
-                return True
-            elif event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
-                self.insert_text("\n")
-                return True
-            elif event.key() == Qt.Key_Tab:
-                self.insert_text("\t")
-                return True
+            
             return True
         return super().eventFilter(obj, event)
 

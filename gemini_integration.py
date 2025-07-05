@@ -145,7 +145,6 @@ Teks input: {user_text}"""
 
     def get_ayat_prompt(self):
         """Get Quran verse search prompt"""
-        # Tambahan: input konteks/topik/tema
         context_dlg = QInputDialog(self.parent)
         context_dlg.setWindowTitle("Cari Ayat")
         context_dlg.setLabelText("Masukkan konteks, topik, atau tema ayat (boleh dikosongkan jika tahu surah/ayat):")
@@ -202,7 +201,11 @@ Teks input: {user_text}"""
         # Prompt logic: jika surah/ayat kosong, gunakan context/topik
         if (not surah and not ayat) and context:
             prompt = f"""Carikan ayat Al-Qur'an yang relevan dengan topik/konteks berikut: "{context}".
-Tampilkan ayat Arab lengkap dengan harakat."""
+Tampilkan ayat Arab lengkap dengan harakat.
+Selalu sebutkan nama surah dan nomor ayat secara jelas pada hasil, dan masukkan ke dalam field "sumber" pada JSON (misal: "Al-Baqarah: 255").
+Jika tidak tahu pasti, tuliskan sumber ayat sebisa mungkin.
+
+"""
             if sertakan_arti == "Ya":
                 prompt += "\nSertakan juga artinya dalam bahasa Indonesia."
             if sertakan_cara_baca == "Ya":
@@ -216,17 +219,19 @@ Jawab HANYA dalam format JSON berikut, tanpa penjelasan tambahan:
   "result": "teks ayat arab dengan harakat",
   "arti": "arti ayat (jika diminta)",
   "cara_baca": "cara baca latin (jika diminta)",
-  "asbabun_nuzul": "asbabun nuzul (jika diminta)"
+  "asbabun_nuzul": "asbabun nuzul (jika diminta)",
+  "sumber": "nama surah dan nomor ayat"
 }"""
             return prompt
 
-        # Jika surah/ayat diisi, tetap seperti sebelumnya
+        # Jika surah/ayat diisi, tetap seperti sebelumnya, tapi wajibkan sumber
         prompt = f"""Tulis ayat Al-Qur'an"""
         if surah:
             prompt += f" surah {surah}"
         if ayat:
             prompt += f" ayat {ayat}"
         prompt += " dalam huruf Arab lengkap dengan harakat."
+        prompt += "\nSelalu sebutkan nama surah dan nomor ayat secara jelas pada hasil, dan masukkan ke dalam field \"sumber\" pada JSON (misal: \"Al-Baqarah: 255\")."
         if sertakan_arti == "Ya":
             prompt += "\nSertakan juga artinya dalam bahasa Indonesia."
         if sertakan_cara_baca == "Ya":
@@ -242,7 +247,8 @@ Jawab HANYA dalam format JSON berikut, tanpa penjelasan tambahan:
   "result": "teks ayat arab dengan harakat",
   "arti": "arti ayat (jika diminta)",
   "cara_baca": "cara baca latin (jika diminta)",
-  "asbabun_nuzul": "asbabun nuzul (jika diminta)"
+  "asbabun_nuzul": "asbabun nuzul (jika diminta)",
+  "sumber": "nama surah dan nomor ayat"
 }"""
         return prompt
 

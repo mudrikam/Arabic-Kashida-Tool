@@ -82,6 +82,9 @@ def format_json_fields(json_obj):
     if "asbabun_nuzul" in json_obj and json_obj["asbabun_nuzul"]:
         lines.append("\n" + str(json_obj["asbabun_nuzul"]))
     
+    if "sumber" in json_obj and json_obj["sumber"]:
+        lines.append("\n" + str(json_obj["sumber"]))
+    
     if "hadith_text" in json_obj and json_obj["hadith_text"]:
         lines.append("\n" + str(json_obj["hadith_text"]))
     
